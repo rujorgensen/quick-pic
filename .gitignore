@@ -1,5 +1,8 @@
 # deps
 node_modules/
 
+# compiled output
+/dist
+
 .nx/cache
 .nx/workspace-data

@@ -1,14 +1,20 @@
 {
-  "name": "quick-pic",
-  "scripts": {
-    "dev": "bun run --hot src/index.ts"
-  },
-  "dependencies": {
-    "hono": "^4.4.7"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "nx": "19.3.0"
-  },
-  "nx": {}
+    "name": "quick-pic",
+    "scripts": {
+        "dev": "bun run --hot src/index.ts",
+        "build": "bun build ./src/index.ts --outdir=./dist --target=bun --minify",
+        "//-0a": "// ****************************************************************************",
+        "//-0b": "// *** DOCKER                                                                  ",
+        "//-0c": "// ****************************************************************************",
+        "docker:build": "docker build --target=deploy -f=.deploy/qp.Dockerfile -t quick-pic:latest .",
+        "docker:run": "docker run -d -p 3000:3000 quick-pic:latest"
+    },
+    "dependencies": {
+        "sharp": "^0.33.4"
+    },
+    "devDependencies": {
+        "@types/bun": "latest",
+        "nx": "19.3.0"
+    },
+    "nx": {}
 }
