@@ -7,6 +7,12 @@ const CACHE_SIZE_LIMIT = 1024 * 1024 * 100; // 100 MB
 const imageCache: ImageCache = new ImageCache(CACHE_SIZE_LIMIT);
 const acceptedParams: ReadonlyArray<string> = ['url', 'percent', 'size_inside'];
 
+const headers = {
+    headers: {
+        'Cache-Control': 'public, max-age=2592000, immutable, stale-while-revalidate=86400',
+    },
+};
+
 interface IParams {
     requestedURL: URL;
     ratioPercent: number;
@@ -26,13 +32,14 @@ Bun.serve({
             try {
                 const params: IParams = parseAndValidateParams(url.searchParams);
 
-                console.log(params);
-
                 const cachedImage: Blob | undefined = imageCache.checkCache(fullURL);
                 if (cachedImage) {
                     console.log(`Read ${cachedImage.size} bytes from cache`);
 
-                    return new Response(cachedImage);
+                    return new Response(
+                        cachedImage,
+                        headers,
+                    );
                 }
 
                 // Fetch and compress the image
@@ -42,7 +49,10 @@ Bun.serve({
                 if (compressedImage) {
                     imageCache.updateCache(fullURL, compressedImage);
 
-                    return new Response(compressedImage);
+                    return new Response(
+                        compressedImage,
+                        headers,
+                    );
                 }
 
             } catch (error: unknown) {
@@ -63,7 +73,7 @@ const parseAndValidateParams = (
 
     const invalidParams: string[] = params.filter((param: string) => !acceptedParams.includes(param));
 
-    if(invalidParams.length > 0){
+    if (invalidParams.length > 0) {
         throw new Error(`Found invalid params: "${invalidParams}". Accepted params are: "${acceptedParams}".`);
     }
 
