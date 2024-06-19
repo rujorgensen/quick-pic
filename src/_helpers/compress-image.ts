@@ -19,7 +19,6 @@ export const compressImage = async (
 
     const image_ = sharp(buffer);
     const meta = await image_.metadata()
-
     const format: keyof FormatEnum | undefined = meta.format;
 
     const config: TConfiguration = {
@@ -34,11 +33,18 @@ export const compressImage = async (
         const imgPromise = image_[format_](config[format_]);
 
         const convertedImg: Buffer = await (size ? imgPromise
+            // Makes sure exif orientation is correct after resizing
+            .rotate()
+
             .resize(
                 size.width,
                 size.height,
-                { fit: 'inside' })
+                { fit: 'inside' },
+            )
             : imgPromise)
+
+            // Should retain metadata in the new image (although rotation does not seem to be retained, hence the rotate() above
+            .withMetadata()
             .toBuffer();
 
         return new Blob([convertedImg]);
