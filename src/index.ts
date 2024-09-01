@@ -21,7 +21,7 @@ interface IParams {
     size?: ISize;
 }
 
-Bun.serve({
+const server = Bun.serve({
     async fetch(req) {
         const url = new URL(req.url);
         const path = url.pathname;
@@ -63,8 +63,9 @@ Bun.serve({
         // 404s
         return new Response('Page not found', { status: 404 });
     }
-})
+});
 
+console.log(`🚀 API Server listening on: ${server.url}`);
 
 const parseAndValidateParams = (
     searchParams: URLSearchParams
