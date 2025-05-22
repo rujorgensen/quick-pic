@@ -38,7 +38,8 @@ RUN bun run build
 # copy production dependencies and source code into final image
 FROM base AS deploy
 
-COPY --from=install ./src/node_modules node_modules
+COPY package.json bun.lockb ./
+RUN bun i --production
 COPY --from=build ./src/dist ./dist
 
 # run the app
