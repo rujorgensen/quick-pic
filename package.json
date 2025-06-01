@@ -14,11 +14,12 @@
         "docker:run": "docker run -d -p 3000:3000 quick-pic:latest"
     },
     "dependencies": {
-        "sharp": "0.33.5"
+        "sharp": "0.34.2"
     },
     "devDependencies": {
-        "@types/bun": "1.1.8",
-        "nx": "19.6.4"
+        "@types/bun": "1.2.15",
+        "nx": "21.1.2"
     },
+    "packageManager": "bun@1.2.15",
     "nx": {}
 }
