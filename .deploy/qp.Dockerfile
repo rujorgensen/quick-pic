@@ -3,7 +3,7 @@
 # ******************************************************************************
 # use the official Bun image, see all versions at https://hub.docker.com/r/oven/bun/tags
 # install dependencies into temp directory, this will cache them and speed up future builds
-FROM oven/bun:1 AS base
+FROM oven/bun:1.2.15-alpine AS base
 
 WORKDIR /src
 
@@ -38,11 +38,14 @@ RUN bun run build
 # copy production dependencies and source code into final image
 FROM base AS deploy
 
+ENV NODE_ENV=production
+
 COPY --from=install ./src/node_modules node_modules
 COPY --from=build ./src/dist ./dist
 
 # run the app
 USER bun
-EXPOSE 3000/tcp
+
+# ! Don't expose the port, set PORT environment variable instead
 
 ENTRYPOINT [ "bun", "run", "./dist/index.js" ]

@@ -7,7 +7,7 @@ bun install
 
 To run:
 ```sh
-bun run serve
+PORT=3000 bun run serve
 ```
 
 open http://localhost:3000
@@ -21,7 +21,7 @@ bun run build
 Build (Docker):
 ```sh
 bun run docker:build
-bun run docker:run
+PORT=3000 bun run docker:run
 ```
 
 ## Try it out

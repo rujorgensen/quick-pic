@@ -11,7 +11,7 @@
         "//-0b": "// *** DOCKER                                                                  ",
         "//-0c": "// ****************************************************************************",
         "docker:build": "docker build --target=deploy -f=.deploy/qp.Dockerfile -t quick-pic:latest .",
-        "docker:run": "docker run -d -p 3000:3000 quick-pic:latest"
+        "docker:run": "docker run -d -e PORT=$PORT -p $PORT:$PORT quick-pic:latest"
     },
     "dependencies": {
         "sharp": "0.34.2"

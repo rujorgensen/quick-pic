@@ -9,6 +9,17 @@ type TConfiguration = {
     png: { compressionLevel: number };
 }
 
+/**
+ * Compresses an image to a specified quality ratio and optionally resizes it.
+ * 
+ * @throws { Error} - If the image format is not supported.
+ *
+ * @param { Blob } image - The image to compress.
+ * @param { number } ratioPercent - The quality ratio for compression (0-100).
+ * @param { ISize } [size] - Optional size to resize the image to.
+ * 
+ * @returns { Promise<Blob> } - A promise that resolves to the compressed image as a Blob.
+ */
 export const compressImage = async (
     image: Blob,
     ratioPercent: number, // 0 - 100
