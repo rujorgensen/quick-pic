@@ -38,11 +38,14 @@ RUN bun run build
 # copy production dependencies and source code into final image
 FROM base AS deploy
 
+ENV NODE_ENV=production
+
 COPY --from=install ./src/node_modules node_modules
 COPY --from=build ./src/dist ./dist
 
 # run the app
 USER bun
-EXPOSE 3000/tcp
+
+# ! Don't expose the port, set PORT environment variable instead
 
 ENTRYPOINT [ "bun", "run", "./dist/index.js" ]
