@@ -17,8 +17,8 @@
         "sharp": "0.34.2"
     },
     "devDependencies": {
-        "@types/bun": "1.2.15",
-        "nx": "21.1.2"
+        "@types/bun": "1.2.17",
+        "nx": "21.2.1"
     },
     "packageManager": "bun@1.2.15",
     "nx": {}
