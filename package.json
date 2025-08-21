@@ -1,5 +1,6 @@
 {
     "name": "quick-pic",
+    "version": "0.1.0",
     "scripts": {
         "serve": "bun run --hot src/index.ts",
         "build": "bun build ./src/index.ts --outdir=./dist --target=bun --minify",
@@ -14,12 +15,12 @@
         "docker:run": "docker run -d -e PORT=$PORT -p $PORT:$PORT quick-pic:latest"
     },
     "dependencies": {
-        "sharp": "0.34.2"
+        "sharp": "0.34.3"
     },
     "devDependencies": {
-        "@types/bun": "1.2.15",
-        "nx": "21.1.2"
+        "@types/bun": "1.2.20",
+        "nx": "21.4.0"
     },
-    "packageManager": "bun@1.2.15",
+    "packageManager": "bun@1.2.20",
     "nx": {}
 }

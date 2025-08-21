@@ -2,7 +2,9 @@ import { ISize } from './_interfaces/size.interfaces';
 import { compressImage } from './_helpers/compress-image';
 import { ImageCache } from './_helpers/image-cache';
 import { requestImageBlob } from './_helpers/request-image';
+import packageJSON from '../package.json';
 
+const VERSION: string = packageJSON.version;
 const CACHE_SIZE_LIMIT = 1024 * 1024 * 100; // 100 MB
 const imageCache: ImageCache = new ImageCache(CACHE_SIZE_LIMIT);
 const acceptedParams: ReadonlyArray<string> = ['url', 'percent', 'size_inside'];
@@ -65,7 +67,7 @@ const server = Bun.serve({
     }
 });
 
-console.log(`🚀 API Server listening on: ${server.url}`);
+console.log(`🚀 API Server (v. ${VERSION}) listening on: ${server.url}`);
 
 const parseAndValidateParams = (
     searchParams: URLSearchParams
