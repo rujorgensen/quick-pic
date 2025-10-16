@@ -3,7 +3,7 @@
 # ******************************************************************************
 # use the official Bun image, see all versions at https://hub.docker.com/r/oven/bun/tags
 # install dependencies into temp directory, this will cache them and speed up future builds
-FROM oven/bun:1.2.20-alpine AS base
+FROM oven/bun:1.3.0-alpine AS base
 
 WORKDIR /src
 
