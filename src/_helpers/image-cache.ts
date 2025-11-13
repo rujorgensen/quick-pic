@@ -10,6 +10,9 @@ export class ImageCache {
         }, 1000 * 60 * 60 * 24 * 7); // 7 days
     }
 
+    /**
+     * Checks if the image is in the cache already.
+     */
     public checkCache(
         url: string,
     ): Blob | undefined {
@@ -22,6 +25,9 @@ export class ImageCache {
         return existing;
     }
 
+    /**
+     * Updates the cache with a new image.
+     */
     public updateCache(
         url: string,
         blob: Blob,
@@ -32,30 +38,36 @@ export class ImageCache {
             return;
         }
 
-        if ((this.getTotalCacheSize() + blob.size) > this.CACHE_SIZE_LIMIT) {
-            console.log(`Resulting cache size limit reached (${(this.getTotalCacheSize() + blob.size)}). Evicting old entries.`);
+        if ((this.getTotalCacheSizeBytes() + blob.size) > this.CACHE_SIZE_LIMIT) {
+            console.log(`Resulting cache size limit reached (${(this.getTotalCacheSizeBytes() + blob.size)}). Evicting old entries.`);
 
             let evicted: number = 0;
 
             do {
                 evicted++;
                 this.evictLastUsed();
-            } while ((this.map.size > 0) && (this.getTotalCacheSize() + blob.size) > this.CACHE_SIZE_LIMIT);
+            } while ((this.map.size > 0) && (this.getTotalCacheSizeBytes() + blob.size) > this.CACHE_SIZE_LIMIT);
 
-            console.log(`Evicted ${evicted} entries, resulting size: ${(this.getTotalCacheSize() + blob.size)}.`);
+            console.log(`Evicted ${evicted} entries, resulting size: ${(this.getTotalCacheSizeBytes() + blob.size)}.`);
         }
 
         this.used.set(url, new Date());
         this.map.set(url, blob);
     }
 
-    private getTotalCacheSize(
+    /**
+     * Returns the total size of the cache in bytes.
+     */
+    private getTotalCacheSizeBytes(
 
     ): number {
         return Array.from(this.map.values())
             .reduce((accumulator: number, blob: Blob) => accumulator + blob.size, 0);
     }
 
+    /**
+     * Removes the least recently used item from the cache.
+     */
     private evictLastUsed(
 
     ) {
