@@ -26,10 +26,9 @@ export const compressImage = async (
     size?: ISize,
 ): Promise<Blob> => {
     const arrayBuffer = await image.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
 
-    const image_ = sharp(buffer);
-    const meta = await image_.metadata()
+    const image_ = sharp(arrayBuffer);
+    const meta = await image_.metadata();
     const format: keyof FormatEnum | undefined = meta.format;
 
     const config: TConfiguration = {
@@ -41,7 +40,7 @@ export const compressImage = async (
     if (format !== undefined && config[format as unknown as keyof TConfiguration]) {
         const format_: keyof TConfiguration = format as unknown as keyof TConfiguration;
 
-        const imgPromise = image_[format_](config[format_]);
+        const imgPromise: sharp.Sharp = image_[format_](config[format_]);
 
         const convertedImg: Buffer = await (size ? imgPromise
             // Makes sure exif orientation is correct after resizing
@@ -62,5 +61,4 @@ export const compressImage = async (
     }
 
     throw new Error(`Invalid format. Accepted formats are: ${IMAGES.join(', ')}`);
-
-}
+};
