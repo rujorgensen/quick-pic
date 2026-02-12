@@ -29,7 +29,7 @@ export const compressImage = async (
     const buffer = Buffer.from(arrayBuffer);
 
     const image_ = sharp(buffer);
-    const meta = await image_.metadata()
+    const meta = await image_.metadata();
     const format: keyof FormatEnum | undefined = meta.format;
 
     const config: TConfiguration = {
