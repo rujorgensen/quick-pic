@@ -40,7 +40,7 @@ export const compressImage = async (
     if (format !== undefined && config[format as unknown as keyof TConfiguration]) {
         const format_: keyof TConfiguration = format as unknown as keyof TConfiguration;
 
-        const imgPromise = image_[format_](config[format_]);
+        const imgPromise: sharp.Sharp = image_[format_](config[format_]);
 
         const convertedImg: Buffer = await (size ? imgPromise
             // Makes sure exif orientation is correct after resizing
