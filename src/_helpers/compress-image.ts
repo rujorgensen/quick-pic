@@ -26,9 +26,8 @@ export const compressImage = async (
     size?: ISize,
 ): Promise<Blob> => {
     const arrayBuffer = await image.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
 
-    const image_ = sharp(buffer);
+    const image_ = sharp(arrayBuffer);
     const meta = await image_.metadata();
     const format: keyof FormatEnum | undefined = meta.format;
 
@@ -62,5 +61,4 @@ export const compressImage = async (
     }
 
     throw new Error(`Invalid format. Accepted formats are: ${IMAGES.join(', ')}`);
-
-}
+};
