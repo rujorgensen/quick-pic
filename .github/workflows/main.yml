@@ -24,7 +24,7 @@ jobs:
           bun-version: latest
 
       - run: bun install --no-cache
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
 
       - run: bun nx affected -t lint test build e2e
 
@@ -41,7 +41,7 @@ jobs:
           bun-version: latest
 
       - run: bun install --no-cache
-      - uses: nrwl/nx-set-shas@v4
+      - uses: nrwl/nx-set-shas@v5
 
       - run: bun nx affected -t docker:build
       
