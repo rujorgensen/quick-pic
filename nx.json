@@ -3,5 +3,6 @@
   "defaultBase": "main",
   "tui": {
     "enabled": false
-  }
+  },
+  "analytics": false
 }
