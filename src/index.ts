@@ -19,7 +19,6 @@ interface IParams {
     requestedURL: URL;
     ratioPercent: number;
 
-    // Uses "inside" of Sharp's resize options
     size?: ISize;
 }
 

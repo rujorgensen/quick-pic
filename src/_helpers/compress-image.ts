@@ -1,7 +1,8 @@
 import { ISize } from "../_interfaces/size.interfaces";
-import sharp, { FormatEnum } from 'sharp';
 
 const IMAGES: ReadonlyArray<string> = ['jpeg', 'png', 'webp'];
+
+type TImageFormat = 'jpeg' | 'png' | 'webp';
 
 type TConfiguration = {
     jpeg: { quality: number };
@@ -27,9 +28,10 @@ export const compressImage = async (
 ): Promise<Blob> => {
     const arrayBuffer = await image.arrayBuffer();
 
-    const image_ = sharp(arrayBuffer);
-    const meta = await image_.metadata();
-    const format: keyof FormatEnum | undefined = meta.format;
+    const meta = await new Bun.Image(arrayBuffer).metadata();
+    // Bun.Image sniffs format from bytes; meta.format is always defined on success
+    // (unknown/undecodable inputs reject the promise before reaching here)
+    const format: TImageFormat | undefined = IMAGES.includes(meta.format) ? meta.format as TImageFormat : undefined;
 
     const config: TConfiguration = {
         jpeg: { quality: ratioPercent },
@@ -37,27 +39,17 @@ export const compressImage = async (
         png: { compressionLevel: ratioPercent / 10 },
     };
 
-    if (format !== undefined && config[format as unknown as keyof TConfiguration]) {
-        const format_: keyof TConfiguration = format as unknown as keyof TConfiguration;
+    if (format !== undefined) {
+        // Bun.Image applies EXIF orientation automatically before any transform
+        // (autoOrient: true by default), so no explicit .rotate() is needed
+        const img = new Bun.Image(arrayBuffer);
+        const pipeline = size ? img.resize(size.width, size.height, { fit: 'inside' }) : img;
 
-        const imgPromise: sharp.Sharp = image_[format_](config[format_]);
-
-        const convertedImg: Buffer = await (size ? imgPromise
-            // Makes sure exif orientation is correct after resizing
-            .rotate()
-
-            .resize(
-                size.width,
-                size.height,
-                { fit: 'inside' },
-            )
-            : imgPromise)
-
-            // Should retain metadata in the new image (although rotation does not seem to be retained, hence the rotate() above
-            .withMetadata()
-            .toBuffer();
-
-        return new Blob([convertedImg]);
+        switch (format) {
+            case 'jpeg': return pipeline.jpeg(config.jpeg).blob();
+            case 'png': return pipeline.png(config.png).blob();
+            case 'webp': return pipeline.webp(config.webp).blob();
+        }
     }
 
     throw new Error(`Invalid format. Accepted formats are: ${IMAGES.join(', ')}`);
