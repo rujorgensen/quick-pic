@@ -19,7 +19,7 @@
     },
     "dependencies": {},
     "devDependencies": {
-        "@types/bun": "1.4.2",
+        "@types/bun": "1.4.3",
         "nx": "23.3.0",
         "typescript": "7.0.2"
     },
