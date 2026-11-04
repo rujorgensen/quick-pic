@@ -4,5 +4,8 @@
   "tui": {
     "enabled": false
   },
-  "analytics": false
+  "analytics": false,
+  "affected": {
+    "legacy": true
+  }
 }
